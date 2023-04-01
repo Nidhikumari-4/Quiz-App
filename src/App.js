@@ -2,10 +2,8 @@ import React from "react";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Hello World THis is Nidhi</p>
-      </header>
+    <div className="text-3xl font-bold underline">
+      <p>Hello World THis is Nidhi</p>
     </div>
   );
 }
