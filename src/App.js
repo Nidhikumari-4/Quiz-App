@@ -1,10 +1,16 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import CreateQuiz from "./pages/CreateQuiz";
 
 function App() {
   return (
-    <div className="text-3xl font-bold underline">
-      <p>Hello World THis is Nidhi</p>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" exact element={<Home />} />
+        <Route path="/createquiz" element={<CreateQuiz />} />
+      </Routes>
+    </Router>
   );
 }
 
