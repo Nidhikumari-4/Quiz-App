@@ -1,98 +1,157 @@
 import React, { useState } from "react";
 
 const CreateQuiz = () => {
-  const [quizData, setQuizData] = useState({
-    name: "",
-    description: "",
-    question: "",
-    points: 0,
-    timeLimit: 0,
-  });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [options, setOptions] = useState([]);
+  const [questions, setQuestions] = useState([
+    { question: "", options: [""], answer: "" },
+  ]);
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setQuizData((prevState) => ({ ...prevState, [name]: value }));
+  const addOption = () => {
+    setOptions([...options, { quizOption: [""] }]);
+  };
+
+  const addQuestion = () => {
+    setQuestions([...questions, { question: "", options: [""], answer: "" }]);
+  };
+
+  const handleQuestionChange = (event, questionIndex) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].question = event.target.value;
+    setQuestions(newQuestions);
+  };
+
+  const handleOptionChange = (event, questionIndex, optionIndex) => {
+    const newOptions = [...options];
+    newOptions[optionIndex].quizOption = event.target.value;
+    setOptions(newOptions);
+  };
+
+  const handleAnswerChange = (event, questionIndex) => {
+    const newQuestions = [...questions];
+    newQuestions[questionIndex].answer = event.target.value;
+    setQuestions(newQuestions);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(questions, options);
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-800">
-      <div className=" absolute inset-x-50 top-2 h-16 text-gray-100 text-3xl font-medium">
-        Create your Quiz 😯❓
-      </div>
-      <div className="flex justify-center w-2/4 p-5 rounded border bg-gray-500 items-center ">
-        <form
-          className="mx-auto flex flex-col items-center max-w-screen-md gap-4 sm:grid-cols-2"
-          onSubmit={handleSubmit}
-        >
-          <div className="mb-5 inline-block text-gray-100 sm:text-base">
-            <label>Quiz Name:</label>
+    <div className="container px-20 py-5 ml-20">
+      <h1 className="text-4xl font-bold text-center mb-3">Create Quiz</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="container bg-slate-200 px-20 py-8">
+          <div className="  form-group flex bg-white shadow-lg rounded-md flex-col  space-y-5 my-3 px-2 py-2">
             <input
               type="text"
-              name="name"
-              className="m-2 px-3 py-3 rounded border bg-gray-50 text-gray-800 outline-none "
-              value={quizData.name}
-              onChange={handleInputChange}
+              id="title"
+              value={title}
+              placeholder="Add Title"
+              className=" text-3xl font-bold border-b-0 border-gray-300 focus:outline-none p-2 w-3/4 "
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-
-          <div className="mb-5 inline-block text-gray-100 sm:text-base">
-            <label className="relative bottom-7">Description:</label>
-            <textarea
-              name="description"
-              className="m-2 px-3 mr-6 rounded border bg-gray-50 text-gray-800 outline-none "
-              value={quizData.description}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="mb-5 inline-block text-gray-100 sm:text-base">
-            <label className="relative bottom-6">Question:</label>
-            <textarea
-              name="question"
-              className="m-2 px-3 mx-6 rounded border bg-gray-50 text-gray-800 outline-none "
-              value={quizData.question}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div className="relative bottom-2 left-5  text-gray-100 sm:text-base flex justify-evenly gap-2 bg-gray-500 items-center ">
-            <input name="option" type="radio" /> Option 1
-            <input name="option" type="radio" /> Option 2
-            <input name="option" type="radio" /> Option 3
-            <input name="option" type="radio" /> Option 4
-          </div>
-
-          <div className="mb-5 inline-block text-gray-100 sm:text-base">
-            <label>Points:</label>
+          <div className="  form-group flex bg-white shadow-lg rounded-md flex-col w-full space-y-5  px-2 py-2">
             <input
-              type="number"
-              name="points"
-              className="m-2 px-3 ml-10 rounded border bg-gray-50 text-gray-800 outline-none "
-              value={quizData.points}
-              onChange={handleInputChange}
+              type="text"
+              id="description"
+              value={description}
+              placeholder="Add Description"
+              className="text-md font-bold border-b-0 border-gray-300 focus:outline-none p-2 w-3/4 "
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
 
-          <div className="mb-5 inline-block text-gray-100 sm:text-base">
-            <label>Time Limit: </label>
-            <input
-              type="number"
-              name="timeLimit"
-              className="m-2 px-3  rounded border bg-gray-50 text-gray-800 outline-none "
-              value={quizData.timeLimit}
-              onChange={handleInputChange}
-            />
+          {/* For Questions and options*/}
+          {questions.map((question, questionIndex) => (
+            <div className="bg-white shadow-lg rounded-md p-5 my-10">
+              <div
+                key={questionIndex}
+                className="form-group block text-lg font-medium text-gray-700 capitalize "
+              >
+                <div className="form-group ">
+                  <label htmlFor={`question${questionIndex + 1}`}></label>
+                  <input
+                    type="text"
+                    id={`question${questionIndex + 1}`}
+                    value={question.question}
+                    className="border-b-2  border-gray-300 focus:outline-none p-2 w-3/4  hover:bg-violet-50"
+                    placeholder={`Question ${questionIndex + 1}`}
+                    onChange={(event) =>
+                      handleQuestionChange(event, questionIndex)
+                    }
+                  />
+                </div>
+                {options.map((option, optionIndex) => (
+                  <div
+                    className="form-group block text-lg font-medium text-gray-700 capitalize my-5"
+                    key={optionIndex}
+                  >
+                    <label
+                      htmlFor={`option${questionIndex + 1}-${optionIndex + 1}`}
+                    ></label>
+                    <input
+                      type="text"
+                      id={`option${questionIndex + 1}-${optionIndex + 1}`}
+                      value={option.quizOption}
+                      className="border-b-2 border-gray-300 focus:outline-none p-2 w-2/4  ml-2"
+                      placeholder={`Option ${optionIndex + 1}`}
+                      onChange={(event) =>
+                        handleOptionChange(event, questionIndex, optionIndex)
+                      }
+                    />
+                  </div>
+                ))}
+
+                {/* <div className="form-group block text-lg font-medium text-gray-700 capitalize"> */}
+                <label htmlFor={`answer${questionIndex + 1}`}></label>
+                <select
+                  id={`answer${questionIndex + 1}`}
+                  value={question.answer}
+                  onChange={(event) => handleAnswerChange(event, questionIndex)}
+                  className="border-2 my-5  rounded-md border-gray-300 focus:outline-none p-2 w-1/4 "
+                >
+                  <option value="">Select answer</option>
+                  {options.map((option, optionIndex) => (
+                    <option value={options.quizOption} key={optionIndex}>
+                      {options.quizOption}
+                    </option>
+                  ))}
+                </select>
+                {/* </div> */}
+              </div>
+            </div>
+          ))}
+
+          <div className="relative w-full p-5 mt-8">
+            <div className="absolute inset-x-0 bottom-5 h-10 flex justify-center text-lg  text-white rounded-md">
+              <button
+                type="button"
+                onClick={addOption}
+                className="inline-flex  mx-8 bg-gray-700 hover:bg-gray-500 items-center px-8 "
+              >
+                Add Option
+              </button>
+              <button
+                type="button"
+                onClick={addQuestion}
+                className="inline-flex  mx-8 bg-gray-700 hover:bg-gray-500 items-center px-8 "
+              >
+                Add Question
+              </button>
+              <button
+                type="submit"
+                className="inline-flex bg-gray-700 hover:bg-gray-500 items-center px-8 "
+              >
+                Create Quiz
+              </button>
+            </div>
           </div>
-          <div className="flex justify-center items-center rounded  hover:text-white bg-gray-800 focus:outline-none cursor-pointer">
-            <span className="flex justify-center items-center rounded-sm bg-white px-20 py-2 text-2xl font-bold hover:bg-transparent">
-              <button type="submit">Submit</button>
-            </span>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 };
