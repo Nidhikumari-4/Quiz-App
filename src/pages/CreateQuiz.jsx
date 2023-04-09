@@ -9,7 +9,7 @@ const CreateQuiz = () => {
   ]);
 
   const addOption = () => {
-    setOptions([...options, { quizOption: [""] }]);
+    setOptions([...options, ""]);
   };
 
   const addQuestion = () => {
@@ -24,7 +24,7 @@ const CreateQuiz = () => {
 
   const handleOptionChange = (event, questionIndex, optionIndex) => {
     const newOptions = [...options];
-    newOptions[optionIndex].quizOption = event.target.value;
+    newOptions[optionIndex] = event.target.value;
     setOptions(newOptions);
   };
 
@@ -36,7 +36,7 @@ const CreateQuiz = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(questions, options);
+    console.log("ques", questions, "option", options);
   };
 
   return (
@@ -115,9 +115,9 @@ const CreateQuiz = () => {
                   className="border-2 my-5  rounded-md border-gray-300 focus:outline-none p-2 w-1/4 "
                 >
                   <option value="">Select answer</option>
-                  {options.map((option, optionIndex) => (
-                    <option value={options.quizOption} key={optionIndex}>
-                      {options.quizOption}
+                  {options.map((option, index) => (
+                    <option value={option} key={index}>
+                      {option}
                     </option>
                   ))}
                 </select>
